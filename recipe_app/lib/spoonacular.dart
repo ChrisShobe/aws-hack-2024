@@ -1,9 +1,10 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'Classes/Recipe.dart';
+import 'api_key.dart';
 
 
-const String apiKey = "019ac8f5318a4d3582a5f7fc34eafc70";
+// const String apiKey = "60f1c58fc9c44053a29956fb7c93cbc8";
 
 Future<Recipe?> fetchRecipe(String recipeName) async {
   

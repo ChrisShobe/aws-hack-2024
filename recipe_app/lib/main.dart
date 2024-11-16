@@ -29,17 +29,27 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+Future<void> delayBetweenRequests() async {
+  await Future.delayed(Duration(seconds: 5)); // 5-second delay
+}
 
+class _MyHomePageState extends State<MyHomePage> {
   final TextEditingController _recipe1Controller = TextEditingController();
   final TextEditingController _recipe2Controller = TextEditingController();
 
-  void _onPressed() {
+  void _onPressed() async {
     // Retrieve text from the controllers and print them
     final recipe1 = _recipe1Controller.text;
-    // final recipe2 = _recipe2Controller.text;
-    fetchRecipe(recipe1);
-    // fetchRecipe(recipe2);
+    final recipe2 = _recipe2Controller.text;
+
+    // Fetch the first recipe
+    await fetchRecipe(recipe1);
+
+    // Add a delay between the two requests
+    await delayBetweenRequests();
+
+    // Fetch the second recipe
+    await fetchRecipe(recipe2);
   }
 
   @override
@@ -56,8 +66,8 @@ class _MyHomePageState extends State<MyHomePage> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextField(
-                  controller: _recipe1Controller,
-                  decoration: const InputDecoration(
+                controller: _recipe1Controller,
+                decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Recipe 1',
                 ),
@@ -66,8 +76,8 @@ class _MyHomePageState extends State<MyHomePage> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextField(
-                  controller: _recipe2Controller,
-                  decoration: const InputDecoration(
+                controller: _recipe2Controller,
+                decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Recipe 2',
                 ),
@@ -82,7 +92,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ],
         ),
-      )
+      ),
     );
   }
 }
