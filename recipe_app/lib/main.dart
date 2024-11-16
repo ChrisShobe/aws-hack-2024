@@ -3,6 +3,7 @@ import 'spoonacular.dart';
 import 'Classes/Recipe.dart';
 import 'recipe_details_page.dart';
 
+
 void main() {
   runApp(const MyApp());
 }
