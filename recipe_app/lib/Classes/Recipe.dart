@@ -141,7 +141,13 @@ class Recipe with RecipeMergeMixin{
       spoonacularSourceUrl: json['spoonacularSourceUrl'],
     );
   }
-
+  int getTime() {
+    int totalTime = readyInMinutes ?? 0;
+    if (preparationMinutes != null && cookingMinutes != null) {
+      totalTime = (preparationMinutes ?? 0) + (cookingMinutes ?? 0);
+    }
+    return totalTime;
+  }
   // To convert to JSON
   Map<String, dynamic> toJson() {
     return {
