@@ -34,7 +34,14 @@ class RecipeDetailsPage extends StatelessWidget {
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
                     ),
+              
                   ),
+                  const SizedBox(height: 16),
+                  Text(
+                    "CookTime:  ${combinedRecipe.getTime()}",
+                    style: const TextStyle(color: Color.fromRGBO(218, 176, 115, 1)),
+                  ),
+
                   const SizedBox(height: 16),
                   Text(
                     "Recipe 1: $recipe1",
