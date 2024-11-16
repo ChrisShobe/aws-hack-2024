@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-// import 'spoonacular.dart';
+import 'spoonacular.dart';
 
 void main() {
   runApp(const MyApp());
@@ -37,10 +37,8 @@ class _MyHomePageState extends State<MyHomePage> {
   void _onPressed() {
     // Retrieve text from the controllers and print them
     final recipe1 = _recipe1Controller.text;
-    final recipe2 = _recipe2Controller.text;
-    print(recipe1);
-    print(recipe2);
-    // fetchRecipe(recipe1);
+    // final recipe2 = _recipe2Controller.text;
+    fetchRecipe(recipe1);
     // fetchRecipe(recipe2);
   }
 
