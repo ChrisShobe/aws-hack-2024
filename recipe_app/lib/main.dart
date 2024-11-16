@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'spoonacular.dart';
+import 'Classes/Recipe.dart';
 
 void main() {
   runApp(const MyApp());
@@ -37,47 +38,27 @@ class _MyHomePageState extends State<MyHomePage> {
   final TextEditingController _recipe1Controller = TextEditingController();
   final TextEditingController _recipe2Controller = TextEditingController();
 
+  // This function is called when the button is pressed
   void _onPressed() async {
-  // Retrieve text from the controllers
-  final recipe1 = _recipe1Controller.text;
-  final recipe2 = _recipe2Controller.text;
-
-  // Fetch the first recipe
-  await fetchRecipe(recipe1);
-
-  // Add a delay between the two requests
-  await delayBetweenRequests();
-
-  // Fetch the second recipe
-  await fetchRecipe(recipe2);
-
-  // Navigate to the recipe details page with a custom transition
-  Navigator.push(
-    context,
-    PageRouteBuilder(
-      transitionDuration: const Duration(milliseconds: 500), // Set transition duration
-      pageBuilder: (context, animation, secondaryAnimation) {
-        return RecipeDetailsPage(
-          recipe1: recipe1,
-          recipe2: recipe2,
-        );
-      },
-      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        const begin = Offset(1.0, 0.0); // Slide in from the right
-        const end = Offset.zero;
-        const curve = Curves.easeInOut;
-
-        var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-        var offsetAnimation = animation.drive(tween);
-
-        return SlideTransition(
-          position: offsetAnimation,
-          child: child,
-        );
-      },
-    ),
-  );
-}
+    // Retrieve text from the controllers
+    final recipe1String = _recipe1Controller.text;
+    final recipe2String = _recipe2Controller.text;
+    Recipe? recipe1 = await fetchRecipe(recipe1String);
+    if (recipe1 == null) {
+      print("Recipe 1 not found");
+      return;
+    }
+    await delayBetweenRequests();
+    Recipe? recipe2 = await fetchRecipe(recipe2String);
+    if (recipe2 == null) {
+      // Handle the case where recipe2 is null
+      print("Recipe 2 not found");
+      return;
+    }
+    Recipe recipe3;
+    recipe3 = recipe1.merge(recipe1, recipe2);
+    recipe3.printSteps(); 
+  }
 
 
   @override

@@ -1,6 +1,8 @@
 import 'dart:convert';
 
-class Recipe {
+import 'package:recipe_app/MergeRecipes.dart';
+
+class Recipe with RecipeMergeMixin{
   bool? vegetarian;
   bool? vegan;
   bool? glutenFree;
@@ -189,4 +191,26 @@ class Recipe {
   List<String> getIngredients() {
     return extendedIngredients ?? [];
   }
+  void printIngredients() {
+      if (extendedIngredients != null && extendedIngredients!.isNotEmpty) {
+        print('Ingredients:');
+        for (var ingredient in extendedIngredients!) {
+          print('- $ingredient');
+        }
+      } else {
+        print('No ingredients available.');
+      }
+    }
+
+    // Print out all the steps
+    void printSteps() {
+      if (analyzedInstructions != null && analyzedInstructions!.isNotEmpty) {
+        print('Steps:');
+        for (var step in analyzedInstructions!) {
+          print('- $step');
+        }
+      } else {
+        print('No steps available.');
+      }
+    }
 }

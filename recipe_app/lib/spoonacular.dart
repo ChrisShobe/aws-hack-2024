@@ -3,43 +3,24 @@ import 'package:http/http.dart' as http;
 import 'Classes/Recipe.dart';
 import 'api_key.dart';
 
-
-
-
 Future<Recipe?> fetchRecipe(String recipeName) async {
-  
-  print("Fetching recipe for $recipeName...");
   final String searchUrl = "https://api.spoonacular.com/recipes/complexSearch";
   final Uri searchUri = Uri.parse(searchUrl).replace(queryParameters: {
     "query": recipeName,       // The recipe name you want to search for
     "apiKey": apiKey,          // Your Spoonacular API key for authentication
-  });
-  
+  });  
   final http.Response searchResponse = await http.get(searchUri);
-  
   if (searchResponse.statusCode == 200) {
-    print("Request successful");
     final Map<String, dynamic> searchResults = json.decode(searchResponse.body);
     final List<dynamic> recipes = searchResults["results"] ?? [];
-    
     if (recipes.isNotEmpty) {
       final int recipeId = recipes[0]["id"];  // Get the ID of the first recipe
       final String recipeUrl = "https://api.spoonacular.com/recipes/$recipeId/information";  // The URL for recipe details
       final Uri recipeUri = Uri.parse(recipeUrl).replace(queryParameters: {"apiKey": apiKey});
-      
       final http.Response recipeResponse = await http.get(recipeUri);
-
       if (recipeResponse.statusCode == 200) {
-        
         final Map<String, dynamic> recipeData = json.decode(recipeResponse.body);
-        print("recipe response is good");
-
         final Recipe recipe = Recipe.fromJson(recipeData);
-  
-        print("Recipe Steps:");
-        for (final step in recipe.getSteps()) {
-          print(step);
-        }
         return recipe;
       } else {
         print("Failed to fetch full recipe details");
