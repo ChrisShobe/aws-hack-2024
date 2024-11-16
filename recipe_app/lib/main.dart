@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'spoonacular.dart';
+import 'Classes/Recipe.dart';
 
 void main() {
   runApp(const MyApp());
@@ -37,20 +38,28 @@ class _MyHomePageState extends State<MyHomePage> {
   final TextEditingController _recipe1Controller = TextEditingController();
   final TextEditingController _recipe2Controller = TextEditingController();
 
+  // This function is called when the button is pressed
   void _onPressed() async {
-    // Retrieve text from the controllers and print them
-    final recipe1 = _recipe1Controller.text;
-    final recipe2 = _recipe2Controller.text;
-
-    // Fetch the first recipe
-    await fetchRecipe(recipe1);
-
-    // Add a delay between the two requests
+    // Retrieve text from the controllers
+    final recipe1String = _recipe1Controller.text;
+    final recipe2String = _recipe2Controller.text;
+    Recipe? recipe1 = await fetchRecipe(recipe1String);
+    if (recipe1 == null) {
+      print("Recipe 1 not found");
+      return;
+    }
     await delayBetweenRequests();
-
-    // Fetch the second recipe
-    await fetchRecipe(recipe2);
+    Recipe? recipe2 = await fetchRecipe(recipe2String);
+    if (recipe2 == null) {
+      // Handle the case where recipe2 is null
+      print("Recipe 2 not found");
+      return;
+    }
+    Recipe recipe3;
+    recipe3 = recipe1.merge(recipe1, recipe2);
+    recipe3.printSteps(); 
   }
+
 
   @override
   Widget build(BuildContext context) {
