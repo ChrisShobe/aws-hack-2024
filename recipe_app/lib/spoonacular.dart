@@ -6,6 +6,7 @@ import 'Classes/Recipe.dart';
 const String apiKey = "019ac8f5318a4d3582a5f7fc34eafc70";
 
 Future<Recipe?> fetchRecipe(String recipeName) async {
+  
   print("Fetching recipe for $recipeName...");
   final String searchUrl = "https://api.spoonacular.com/recipes/complexSearch";
   final Uri searchUri = Uri.parse(searchUrl).replace(queryParameters: {
@@ -31,8 +32,9 @@ Future<Recipe?> fetchRecipe(String recipeName) async {
         
         final Map<String, dynamic> recipeData = json.decode(recipeResponse.body);
         print("recipe response is good");
+
         final Recipe recipe = Recipe.fromJson(recipeData);
-        
+  
         print("Recipe Steps:");
         for (final step in recipe.getSteps()) {
           print(step);
