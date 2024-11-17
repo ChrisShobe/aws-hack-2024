@@ -1,20 +1,33 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from requesting import combined_message
+from converse import fetch_model_responses_multiple_times
+import boto3
+from botocore.exceptions import ClientError
+import os
+from dotenv import load_dotenv
+from utils import read_message_file, stringify
 
 app = Flask(__name__)
 CORS(app)
 
+load_dotenv()
 
-def read_message_file(file_path):
-    with open(file_path, 'r') as file:
-        return file.read() 
+# Get AWS credentials
+access_key_id = os.getenv("AWS_ACCESS_KEY_ID")
+secret_access_key = os.getenv("AWS_SECRET_ACCESS_KEY")
 
-def stringify(name, ingredients, steps):
-    ingredients_str = "\n".join(ingredients) if ingredients else "No ingredients listed."
-    steps_str = "\n".join(steps) if steps else "No steps listed."
-    recipe_str = f"Recipe: {name}\nIngredients:\n{ingredients_str}\nSteps:\n{steps_str}"
-    return recipe_str
+# Initialize the AWS Bedrock client
+client = boto3.client(
+    service_name="bedrock-runtime",
+    aws_access_key_id=access_key_id,
+    aws_secret_access_key=secret_access_key,
+    region_name="us-west-2",
+)
+
+# The model ID for the model you want to use
+model_id = "us.meta.llama3-2-3b-instruct-v1:0"
+
 
 @app.route("/send_data", methods=['POST'])
 def receiveData():
@@ -26,33 +39,35 @@ def receiveData():
         recipe1_name = data.get('recipe1_name')
         recipe1_steps = data.get('recipe1_steps')
         recipe1_ingredients = data.get('recipe1_ingredients')
-        
+
         recipe2_name = data.get('recipe2_name')
         recipe2_steps = data.get('recipe2_steps')
         recipe2_ingredients = data.get('recipe2_ingredients')
 
+        # Convert the recipes into string format
         recipe1_final = stringify(recipe1_name, recipe1_ingredients, recipe1_steps)
         recipe2_final = stringify(recipe2_name, recipe2_ingredients, recipe2_steps)
 
-        combined_message(recipe1_final, recipe2_final, read_message_file('message.txt'))
+        # Generate a combined message using the recipes and additional instructions from a file
+        combined_msg = combined_message(recipe1_final, recipe2_final, read_message_file('message.txt'))
 
-        # print(f"Received Recipe 1: {recipe1_name}")
-        # print(f"Steps: {recipe1_steps}")
-        # print(f"Ingredients: {recipe1_ingredients}")
+        responses = fetch_model_responses_multiple_times(client, model_id, combined_msg, [])
 
-        # print(f"Received Recipe 2: {recipe2_name}")
-        # print(f"Steps: {recipe2_steps}")
-        # print(f"Ingredients: {recipe2_ingredients}")
+        # Handle responses (optional)
+        print("Model responses:", responses)
 
         # Respond back with a confirmation
         return jsonify({
             "message": "Recipes received successfully",
             "recipe1_name": recipe1_name,
-            "recipe2_name": recipe2_name
+            "recipe2_name": recipe2_name,
+            "model_responses": responses
         }), 200
+
     except Exception as e:
         print(f"Error: {e}")
         return jsonify({"error": str(e)}), 400
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5001, debug=True)

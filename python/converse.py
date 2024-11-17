@@ -2,8 +2,7 @@ import boto3
 from botocore.exceptions import ClientError
 import os
 from dotenv import load_dotenv
-from requesting import combined_message  # Importing the function
-from api_catch import read_message_file
+from utils import read_message_file, stringify
 
 load_dotenv()
 
@@ -101,94 +100,41 @@ def fetch_model_response(client, model_id, user_message, previous_responses=None
         return None
 
 
-# # Example inputs
-# recipe1 = input("Enter recipe 1: ")
-# recipe2 = input("Enter recipe 2: ")
-# more_info = input("Enter more info: ")
+def fetch_model_responses_multiple_times(client, model_id, user_message, previous_responses=None, num_requests=3):
+    """
+    Calls the fetch_model_response function multiple times in a loop.
 
-# # Generate the user message from combined_message function
-# user_message = combined_message(recipe1, recipe2, more_info)
-# if not user_message:
-#     print("ERROR: Combined message is empty or invalid.")
-#     exit(1)
+    Args:
+        client (boto3.client): The initialized AWS Bedrock client.
+        model_id (str): The model ID for the model to use.
+        user_message (str): The user message to send.
+        previous_responses (list, optional): List of previous conversation history.
+        num_requests (int, optional): The number of times to call fetch_model_response. Default is 3.
 
-# # Start with an empty previous responses list
-# previous_responses = []
+    Returns:
+        list: A list of responses from the model for each request.
+    """
+    responses = []
+    for i in range(num_requests):
+        print(f"Fetching response {i + 1}...")
+        response = fetch_model_response(client, model_id, user_message, previous_responses)
+        
+        if response:
+            responses.append(response)
+            # Update the conversation history with the user's message and assistant's response
+            previous_responses.append(
+                {
+                    "role": "user",
+                    "content": [{"text": user_message}],
+                }
+            )
+            previous_responses.append(
+                {
+                    "role": "assistant",
+                    "content": [{"text": response}],
+                }
+            )
+        else:
+            print(f"Error fetching response {i + 1}")
 
-# # First request: send the initial user message
-# response = fetch_model_response(client, model_id, user_message, previous_responses)
-
-# # Check if response is valid, then append the assistant’s response to the conversation history
-# if response:
-#     previous_responses.append(
-#         {
-#             "role": "user",
-#             "content": [{"text": user_message}],
-#         }
-#     )
-#     previous_responses.append(
-#         {
-#             "role": "assistant",
-#             "content": [{"text": response}],
-#         }
-#     )
-
-#     # Example: Ask the user for a second message
-#     second_user_message = input("\nEnter your second message: ")
-
-#     # Second request: send the second user message along with the assistant’s first response
-#     response = fetch_model_response(client, model_id, second_user_message, previous_responses)
-
-#     # Append the second assistant’s response to the conversation history if it's valid
-#     if response:
-#         previous_responses.append(
-#             {
-#                 "role": "user",
-#                 "content": [{"text": second_user_message}],
-#             }
-#         )
-#         previous_responses.append(
-#             {
-#                 "role": "assistant",
-#                 "content": [{"text": response}],
-#             }
-#         )
-
-previous_responses = []
-
-response = fetch_model_response(client, model_id, read_message_file("message.txt"), previous_responses)
-
-if response:
-    previous_responses.append(
-        {
-            "role": "user",
-            "content": [{"text": read_message_file("message.txt")}],
-        }
-    )
-    previous_responses.append(
-        {
-            "role": "assistant",
-            "content": [{"text": response}],
-        }
-    )
-
-    # Example: Ask the user for a second message
-    second_user_message = input("\nEnter your second message: ")
-
-    # Second request: send the second user message along with the assistant’s first response
-    response = fetch_model_response(client, model_id, second_user_message, previous_responses)
-
-    # Append the second assistant’s response to the conversation history if it's valid
-    if response:
-        previous_responses.append(
-            {
-                "role": "user",
-                "content": [{"text": second_user_message}],
-            }
-        )
-        previous_responses.append(
-            {
-                "role": "assistant",
-                "content": [{"text": response}],
-            }
-        )
+    return responses
