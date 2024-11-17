@@ -10,6 +10,9 @@ load_dotenv()
 access_key_id = os.getenv("AWS_ACCESS_KEY_ID")
 secret_access_key = os.getenv("AWS_SECRET_ACCESS_KEY")
 
+print("AWS_ACCESS_KEY_ID:", os.getenv("AWS_ACCESS_KEY_ID"))
+print("AWS_SECRET_ACCESS_KEY:", os.getenv("AWS_SECRET_ACCESS_KEY"))
+
 client = boto3.client(
     service_name="bedrock-runtime",
     aws_access_key_id=access_key_id,
@@ -24,7 +27,7 @@ model_id = "us.meta.llama3-2-3b-instruct-v1:0"
 def fetch_model_response(client, model_id, user_message, previous_responses=None):
     """
     Fetches the model response from AWS Bedrock with context.
-    
+
     Args:
         client (boto3.client): The initialized AWS Bedrock client.
         model_id (str): The ID of the model to use.
@@ -39,20 +42,34 @@ def fetch_model_response(client, model_id, user_message, previous_responses=None
         print("ERROR: User message is empty. Please provide a valid message.")
         return None
 
-    # Construct the conversation payload
+    # Initialize the conversation list
     conversation = []
 
-    # If previous responses exist, include them in the conversation
-    if previous_responses:
+    # Always start the conversation with a user message
+    if not previous_responses:
+        # If no previous responses, this must be the first user message
+        conversation.append(
+            {
+                "role": "user",
+                "content": [{"text": user_message}],
+            }
+        )
+    else:
+        # Validate that the previous responses list starts with a user message
+        if previous_responses[0]["role"] != "user":
+            print("ERROR: Conversation history is invalid. It must start with a user message.")
+            return None
+
+        # Add previous responses to the conversation
         conversation.extend(previous_responses)
 
-    # Add the current user message with context
-    conversation.append(
-        {
-            "role": "user",  # Current message must be from the user
-            "content": [{"text": user_message}],
-        }
-    )
+        # Append the current user message
+        conversation.append(
+            {
+                "role": "user",
+                "content": [{"text": user_message}],
+            }
+        )
 
     print("Sending the following conversation to the model:")
     for message in conversation:
@@ -91,7 +108,7 @@ recipe1 = input("Enter recipe 1: ")
 recipe2 = input("Enter recipe 2: ")
 more_info = input("Enter more info: ")
 
-# Generate the user message from combined message function
+# Generate the user message from combined_message function
 user_message = combined_message(recipe1, recipe2, more_info)
 if not user_message:
     print("ERROR: Combined message is empty or invalid.")
@@ -107,7 +124,13 @@ response = fetch_model_response(client, model_id, user_message, previous_respons
 if response:
     previous_responses.append(
         {
-            "role": "assistant",  # The assistant's response
+            "role": "user",
+            "content": [{"text": user_message}],
+        }
+    )
+    previous_responses.append(
+        {
+            "role": "assistant",
             "content": [{"text": response}],
         }
     )
@@ -122,7 +145,13 @@ if response:
     if response:
         previous_responses.append(
             {
-                "role": "assistant",  # The second assistant's response
+                "role": "user",
+                "content": [{"text": second_user_message}],
+            }
+        )
+        previous_responses.append(
+            {
+                "role": "assistant",
                 "content": [{"text": response}],
             }
         )
