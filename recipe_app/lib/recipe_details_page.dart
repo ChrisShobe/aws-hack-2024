@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
-import 'Classes/Recipe.dart'; 
+import 'Classes/Recipe.dart';
+import 'firebase_database.dart'; // Firebase service
 
 class RecipeDetailsPage extends StatelessWidget {
   final String recipe1;
   final String recipe2;
   final Recipe recipe3; // This will be the recipe with merged ingredients and steps
+  final Recipe combinedRecipe;
+  final String apiResponse;
   final TextEditingController _moreInfo = TextEditingController();
+
+  final FirebaseService _firebaseService = FirebaseService(); // Firebase service instance
 
   RecipeDetailsPage({
     super.key,
@@ -18,6 +23,33 @@ class RecipeDetailsPage extends StatelessWidget {
     final moreinfo = _moreInfo.text;
     print(moreinfo);
   }
+
+    required this.combinedRecipe,
+    required this.apiResponse,
+  });
+
+  void _onPressed() async {
+  final moreInfo = _moreInfo.text.trim();
+
+  // Validate the score input
+  int? score = int.tryParse(moreInfo);
+  if (score == null || score < 1 || score > 10) {
+    print("Invalid score. Please enter a number between 1 and 10.");
+    return;
+  }
+
+  print("Score submitted: $score");
+
+  // Use the writeOrUpdateData method to update the score or create a new entry
+  try {
+    await _firebaseService.writeOrUpdateData([recipe1, recipe2], apiResponse, score);
+    print("Score successfully saved or updated in Firestore.");
+  } catch (e) {
+    print("Error saving or updating score: $e");
+  }
+}
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -112,6 +144,7 @@ class RecipeDetailsPage extends StatelessWidget {
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
                           recipe3.getSteps().join("\n"), // Replace API response with Recipe 3 details
+                          apiResponse,
                           style: const TextStyle(color: Color.fromRGBO(100, 33, 27, 1)),
                         ),
                       ),
@@ -121,7 +154,7 @@ class RecipeDetailsPage extends StatelessWidget {
                           controller: _moreInfo,
                           decoration: const InputDecoration(
                             border: OutlineInputBorder(),
-                            labelText: 'Recipe 2',
+                            labelText: 'Rating of the Recipe 1-10',
                           ),
                         ),
                       ),
@@ -132,7 +165,7 @@ class RecipeDetailsPage extends StatelessWidget {
                           width: 1000,
                           child: ElevatedButton(
                             onPressed: _onPressed,
-                            child: const Text('Generate Recipe'),
+                            child: const Text('Submit Score'),
                           ),
                         ),
                       ),

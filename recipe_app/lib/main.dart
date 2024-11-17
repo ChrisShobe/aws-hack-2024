@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-import 'spoonacular.dart';
 import 'Classes/Recipe.dart';
 import 'recipe_details_page.dart';
 import 'SendInfoToApi.dart';
@@ -8,6 +6,25 @@ import 'dart:convert';
 
 void main() {
 
+import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_database.dart'; // Firebase service file
+import 'spoonacular.dart';
+
+const FirebaseOptions MyFirebaseOptions = FirebaseOptions(
+  apiKey: "AIzaSyASRwMzIQGyydlOhqG1RVQTRtstNJthg-Y",
+  authDomain: "recipeapp-85fd0.firebaseapp.com",
+  databaseURL: "https://recipeapp-85fd0-default-rtdb.firebaseio.com",
+  projectId: "recipeapp-85fd0",
+  storageBucket: "recipeapp-85fd0.firebasestorage.app",
+  messagingSenderId: "275828398349",
+  appId: "1:275828398349:web:135b40b70b93807b8d3844",
+  measurementId: "G-RNQMXSY33C"
+);
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: MyFirebaseOptions);
   runApp(const MyApp());
 }
 void parseRecipeJson(String jsonData, Recipe recipe3) {
@@ -98,12 +115,13 @@ class MyHomePage extends StatefulWidget {
 }
 
 Future<void> delayBetweenRequests() async {
-  await Future.delayed(Duration(seconds: 2)); // 5-second delay
+  await Future.delayed(Duration(seconds: 2)); // 2-second delay
 }
 
 class _MyHomePageState extends State<MyHomePage> {
   final TextEditingController _recipe1Controller = TextEditingController();
   final TextEditingController _recipe2Controller = TextEditingController();
+  final FirebaseService _firebaseService = FirebaseService(); // Initialize Firebase service
 
   // This function is called when the button is pressed
   void _onPressed() async {
@@ -167,14 +185,86 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  await delayBetweenRequests();
+
+  Recipe? recipe2 = await fetchRecipe(recipe2String);
+  if (recipe2 == null) {
+    print("Recipe 2 not found");
+    return;
+  }
+
+  // Call API and get response
+  String apiResponse = await sendToApi(recipe1, recipe2);
+
+  // Save the user inputs and API response to Firestore
+  await _firebaseService.writeDataToFirestore([recipe1String, recipe2String], apiResponse);
+
+  // Merge recipes (if required by your application logic)
+  Recipe recipe3 = await recipe1.merge(recipe1, recipe2);
+
+  // Navigate to RecipeDetailsPage and pass the merged recipe and API response
+  Navigator.push(
+    context,
+    PageRouteBuilder(
+      transitionDuration: const Duration(milliseconds: 700),
+      pageBuilder: (context, animation, secondaryAnimation) {
+        return RecipeDetailsPage(
+          recipe1: recipe1String,
+          recipe2: recipe2String,
+          combinedRecipe: recipe3,
+          apiResponse: apiResponse, // Pass the response to the details page
+        );
+      },
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        const begin = Offset(1.0, 0.0);
+        const end = Offset.zero;
+        const curve = Curves.easeInOut;
+
+        var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+        var offsetAnimation = animation.drive(tween);
+
+        return SlideTransition(
+          position: offsetAnimation,
+          child: child,
+        );
+      },
+    ),
+  );
+}
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 219, 198, 166),
-      appBar: AppBar(
-        backgroundColor: const Color.fromRGBO(100, 33, 27, 1),
-        title: Text(widget.title, style: const TextStyle(color: Color.fromRGBO(218, 176, 115, 1))),
-      ),
+      appBar: PreferredSize(
+  preferredSize: const Size.fromHeight(100), // Set the desired height here
+  child: AppBar(
+    backgroundColor: const Color.fromRGBO(100, 33, 27, 1),
+    title: Row(
+      children: [
+        // Logo on the left
+        Image.asset(
+          'assets/logo.png', // Path to your logo in the assets folder
+          height: 60, // Adjust the logo size to fit the taller AppBar
+        ),
+        const Spacer(), // Spacer to push the app name to the center
+        // App name in the center
+        Text(
+          'Literally Cooking',
+          style: const TextStyle(
+            color: Color.fromRGBO(218, 176, 115, 1),
+            fontSize: 40, // Adjust font size as needed
+          ),
+        ),
+        const Spacer(), // Spacer to balance alignment
+      ],
+    ),
+    centerTitle: false, // Turn off default centering for manual adjustments
+  ),
+),
+
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: SingleChildScrollView(
