@@ -1,10 +1,25 @@
-import 'package:flutter/material.dart';
-import 'spoonacular.dart';
 import 'Classes/Recipe.dart';
 import 'recipe_details_page.dart';
 import 'SendInfoToApi.dart';
+import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_database.dart';
+import 'spoonacular.dart';
 
-void main() {
+const FirebaseOptions MyFirebaseOptions = FirebaseOptions(
+  apiKey: "AIzaSyASRwMzIQGyydlOhqG1RVQTRtstNJthg-Y",
+  authDomain: "recipeapp-85fd0.firebaseapp.com",
+  databaseURL: "https://recipeapp-85fd0-default-rtdb.firebaseio.com",
+  projectId: "recipeapp-85fd0",
+  storageBucket: "recipeapp-85fd0.firebasestorage.app",
+  messagingSenderId: "275828398349",
+  appId: "1:275828398349:web:135b40b70b93807b8d3844",
+  measurementId: "G-RNQMXSY33C"
+);
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: MyFirebaseOptions);
   runApp(const MyApp());
 }
 

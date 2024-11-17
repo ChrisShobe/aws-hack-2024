@@ -1,6 +1,7 @@
 import 'Classes/Recipe.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'firebase_database.dart';
 
 Future<String> sendToApi(Recipe recipe1, Recipe recipe2) async {
   String? name1 = recipe1.getName();
@@ -29,6 +30,12 @@ Future<String> sendToApi(Recipe recipe1, Recipe recipe2) async {
     );
 
     if (response.statusCode == 200) {
+      print('Data sent successfully: ${response.body}');
+
+        // Write the response to Firebase
+      FirebaseService firebaseService = FirebaseService();
+      await firebaseService.writeResponseToFirebase(response.body);
+
       return response.body; // Return the response body
     } else {
       return 'Failed to send data: ${response.statusCode}';
