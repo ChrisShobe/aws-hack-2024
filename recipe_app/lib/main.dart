@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'spoonacular.dart';
 import 'Classes/Recipe.dart';
 import 'recipe_details_page.dart';
+import 'SendInfoToApi.dart';
 
 void main() {
   runApp(const MyApp());
@@ -58,13 +59,13 @@ class _MyHomePageState extends State<MyHomePage> {
   // Fetch the second recipe
   Recipe? recipe2 = await fetchRecipe(recipe2String);
   if (recipe2 == null) {
-    // Handle the case where recipe2 is null
     print("Recipe 2 not found");
     return;
   }
-
+  print("reached her");
+  SendToApi(recipe1, recipe2);
   // Merge the two recipes
-  Recipe recipe3 = recipe1.merge(recipe1, recipe2);
+  Recipe recipe3 = await recipe1.merge(recipe1, recipe2);
   recipe3.printSteps();
 
   // Navigate to the recipe details page with a custom transition
