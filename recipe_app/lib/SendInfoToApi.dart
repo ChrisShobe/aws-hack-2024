@@ -33,8 +33,8 @@ Future<String> sendToApi(Recipe recipe1, Recipe recipe2) async {
       print('Data sent successfully: ${response.body}');
 
         // Write the response to Firebase
-      FirebaseService firebaseService = FirebaseService();
-      await firebaseService.writeResponseToFirebase(response.body);
+      // FirebaseService firebaseService = FirebaseService();
+      // await firebaseService.writeResponseToFirebase(response.body);
 
       return response.body; // Return the response body
     } else {

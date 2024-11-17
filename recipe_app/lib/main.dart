@@ -3,7 +3,7 @@ import 'recipe_details_page.dart';
 import 'SendInfoToApi.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'firebase_database.dart';
+import 'firebase_database.dart'; // Firebase service file
 import 'spoonacular.dart';
 
 const FirebaseOptions MyFirebaseOptions = FirebaseOptions(
@@ -48,17 +48,23 @@ class MyHomePage extends StatefulWidget {
 }
 
 Future<void> delayBetweenRequests() async {
-  await Future.delayed(Duration(seconds: 2)); // 5-second delay
+  await Future.delayed(Duration(seconds: 2)); // 2-second delay
 }
 
 class _MyHomePageState extends State<MyHomePage> {
   final TextEditingController _recipe1Controller = TextEditingController();
   final TextEditingController _recipe2Controller = TextEditingController();
+  final FirebaseService _firebaseService = FirebaseService(); // Initialize Firebase service
 
   // This function is called when the button is pressed
   void _onPressed() async {
-  final recipe1String = _recipe1Controller.text;
-  final recipe2String = _recipe2Controller.text;
+  final recipe1String = _recipe1Controller.text.trim();
+  final recipe2String = _recipe2Controller.text.trim();
+
+  if (recipe1String.isEmpty || recipe2String.isEmpty) {
+    print("Please enter both recipes.");
+    return;
+  }
 
   Recipe? recipe1 = await fetchRecipe(recipe1String);
   if (recipe1 == null) {
@@ -74,10 +80,16 @@ class _MyHomePageState extends State<MyHomePage> {
     return;
   }
 
+  // Call API and get response
   String apiResponse = await sendToApi(recipe1, recipe2);
 
+  // Save the user inputs and API response to Firebase Realtime Database
+  await _firebaseService.writeDataToFirestore([recipe1String, recipe2String], apiResponse);
+
+  // Merge recipes (if required by your application logic)
   Recipe recipe3 = await recipe1.merge(recipe1, recipe2);
 
+  // Navigate to RecipeDetailsPage and pass the merged recipe and API response
   Navigator.push(
     context,
     PageRouteBuilder(

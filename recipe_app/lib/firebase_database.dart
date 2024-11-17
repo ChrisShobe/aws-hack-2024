@@ -1,20 +1,22 @@
-import 'dart:convert';
-import 'package:firebase_database/firebase_database.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FirebaseService {
-  final DatabaseReference _database = FirebaseDatabase.instance.reference();
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Future<void> writeResponseToFirebase(String responseBody) async {
+  Future<void> writeDataToFirestore(List<String> userInput, String responseBody) async {
     try {
-      // Parse the response body if necessary
-      var responseData = jsonDecode(responseBody);
+      // Create a structured JSON object to match your Firestore setup
+      var data = {
+        'Input': userInput, // The list of inputs (e.g., Recipe 1 and Recipe 2)
+        'Output': responseBody, // The API response
+      };
 
-      // Write the data to Firebase under a specific path
-      await _database.child('apiResponses').push().set(responseData);
+      // Write the data to Firestore under the "knowledgeBase" collection
+      await _firestore.collection('knowledgeBase').add(data);
 
-      print('Data successfully written to Firebase.');
+      print('Data successfully written to Firestore.');
     } catch (e) {
-      print('Error writing to Firebase: $e');
+      print('Error writing to Firestore: $e');
     }
   }
 }
