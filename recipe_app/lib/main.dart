@@ -42,47 +42,42 @@ class _MyHomePageState extends State<MyHomePage> {
 
   // This function is called when the button is pressed
   void _onPressed() async {
-  // Retrieve text from the controllers
   final recipe1String = _recipe1Controller.text;
   final recipe2String = _recipe2Controller.text;
 
-  // Fetch the first recipe
   Recipe? recipe1 = await fetchRecipe(recipe1String);
   if (recipe1 == null) {
     print("Recipe 1 not found");
     return;
   }
 
-  // Add a delay between the two requests
   await delayBetweenRequests();
 
-  // Fetch the second recipe
   Recipe? recipe2 = await fetchRecipe(recipe2String);
   if (recipe2 == null) {
     print("Recipe 2 not found");
     return;
   }
-  print("reached her");
 
-  sendToApi(recipe1, recipe2);
-  // Merge the two recipes
+  // Capture response body from the API
+  String apiResponse = await sendToApi(recipe1, recipe2);
+
   Recipe recipe3 = await recipe1.merge(recipe1, recipe2);
-  recipe3.printSteps();
 
-  // Navigate to the recipe details page with a custom transition
   Navigator.push(
     context,
     PageRouteBuilder(
-      transitionDuration: const Duration(milliseconds: 700), // Set transition duration
+      transitionDuration: const Duration(milliseconds: 700),
       pageBuilder: (context, animation, secondaryAnimation) {
         return RecipeDetailsPage(
           recipe1: recipe1String,
           recipe2: recipe2String,
           combinedRecipe: recipe3,
+          apiResponse: apiResponse, // Pass the response to the details page
         );
       },
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        const begin = Offset(1.0, 0.0); // Slide in from the right
+        const begin = Offset(1.0, 0.0);
         const end = Offset.zero;
         const curve = Curves.easeInOut;
 
@@ -97,6 +92,7 @@ class _MyHomePageState extends State<MyHomePage> {
     ),
   );
 }
+
 
   @override
   Widget build(BuildContext context) {
