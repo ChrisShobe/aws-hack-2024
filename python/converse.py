@@ -34,17 +34,12 @@ def fetch_model_response(client, model_id, user_message, previous_responses=None
     Returns:
         str: The model response or an error message if the response is None.
     """
-    # Ensure the user message is not empty or None
     if not user_message:
-        print("ERROR: User message is empty. Please provide a valid message.")
         return None
 
-    # Initialize the conversation list
     conversation = []
 
-    # Always start the conversation with a user message
     if not previous_responses:
-        # If no previous responses, this must be the first user message
         conversation.append(
             {
                 "role": "user",
@@ -52,15 +47,10 @@ def fetch_model_response(client, model_id, user_message, previous_responses=None
             }
         )
     else:
-        # Validate that the previous responses list starts with a user message
         if previous_responses[0]["role"] != "user":
-            print("ERROR: Conversation history is invalid. It must start with a user message.")
             return None
 
-        # Add previous responses to the conversation
         conversation.extend(previous_responses)
-
-        # Append the current user message
         conversation.append(
             {
                 "role": "user",
@@ -68,35 +58,24 @@ def fetch_model_response(client, model_id, user_message, previous_responses=None
             }
         )
 
-    print("Sending the following conversation to the model:")
-    for message in conversation:
-        print(f"Role: {message['role']}, Content: {message['content'][0]['text']}")  # Debugging print
-
     try:
-        # Send the request to AWS Bedrock and stream the response
         streaming_response = client.converse_stream(
             modelId=model_id,
             messages=conversation,
             inferenceConfig={"maxTokens": 512, "temperature": 0.5, "topP": 0.9},
         )
 
-        print("\nModel Response:")
-        # Extract and print the streamed response text in real-time
         response_text = ""
         for chunk in streaming_response["stream"]:
             if "contentBlockDelta" in chunk:
-                text = chunk["contentBlockDelta"]["delta"]["text"]
-                print(text, end="")
-                response_text += text
-        print()  # Add a newline at the end of the response
+                response_text += chunk["contentBlockDelta"]["delta"]["text"]
 
         if not response_text:
             raise ValueError("Model response is empty or None.")
 
         return response_text
 
-    except (ClientError, ValueError, Exception) as e:
-        print(f"ERROR: Can't invoke '{model_id}'. Reason: {e}")
+    except (ClientError, ValueError, Exception):
         return None
 
 
@@ -115,13 +94,11 @@ def fetch_model_responses_multiple_times(client, model_id, user_message, previou
         list: A list of responses from the model for each request.
     """
     responses = []
-    for i in range(num_requests):
-        print(f"Fetching response {i + 1}...")
+    for _ in range(num_requests):
         response = fetch_model_response(client, model_id, user_message, previous_responses)
         
         if response:
             responses.append(response)
-            # Update the conversation history with the user's message and assistant's response
             previous_responses.append(
                 {
                     "role": "user",
@@ -134,7 +111,5 @@ def fetch_model_responses_multiple_times(client, model_id, user_message, previou
                     "content": [{"text": response}],
                 }
             )
-        else:
-            print(f"Error fetching response {i + 1}")
 
     return responses
