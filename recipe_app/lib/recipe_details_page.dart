@@ -24,48 +24,50 @@ class RecipeDetailsPage extends StatelessWidget {
             color: const Color.fromRGBO(100, 33, 27, 1), // Match the AppBar color
             child: Padding(
               padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    "Combined Recipe Title",
-                    style: TextStyle(
-                      color: Color.fromRGBO(218, 176, 115, 1),
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      "Combined Recipe Title",
+                      style: TextStyle(
+                        color: Color.fromRGBO(218, 176, 115, 1),
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
+                
                     ),
-              
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    "CookTime:  ${combinedRecipe.getTime()}",
-                    style: const TextStyle(color: Color.fromRGBO(218, 176, 115, 1)),
-                  ),
-
-                  const SizedBox(height: 16),
-                  Text(
-                    "Recipe 1: $recipe1",
-                    style: const TextStyle(color: Color.fromRGBO(218, 176, 115, 1)),
-                  ),
-                  Text(
-                    "Recipe 2: $recipe2",
-                    style: const TextStyle(color: Color.fromRGBO(218, 176, 115, 1)),
-                  ),
-                  const SizedBox(height: 16),
-                  const Text(
-                    "Ingredients",
-                    style: TextStyle(
-                      color: Color.fromRGBO(218, 176, 115, 1),
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
+                    const SizedBox(height: 16),
+                    Text(
+                      "CookTime:  ${combinedRecipe.getTime()}",
+                      style: const TextStyle(color: Color.fromRGBO(218, 176, 115, 1)),
                     ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    combinedRecipe.getIngredients().join("\n"), // Replace with actual ingredients
-                    style: const TextStyle(color: Color.fromRGBO(218, 176, 115, 1)),
-                  ),
-                ],
+                
+                    const SizedBox(height: 16),
+                    Text(
+                      "Recipe 1: $recipe1",
+                      style: const TextStyle(color: Color.fromRGBO(218, 176, 115, 1)),
+                    ),
+                    Text(
+                      "Recipe 2: $recipe2",
+                      style: const TextStyle(color: Color.fromRGBO(218, 176, 115, 1)),
+                    ),
+                    const SizedBox(height: 16),
+                    const Text(
+                      "Ingredients",
+                      style: TextStyle(
+                        color: Color.fromRGBO(218, 176, 115, 1),
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      combinedRecipe.getIngredients().join("\n"), // Replace with actual ingredients
+                      style: const TextStyle(color: Color.fromRGBO(218, 176, 115, 1)),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

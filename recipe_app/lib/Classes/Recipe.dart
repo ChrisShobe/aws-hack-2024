@@ -19,6 +19,10 @@ class Recipe with RecipeMergeMixin{
     this.preparationMinutes,
     this.cookingMinutes,
   });
+  
+  String? getName(){
+    return title;
+  }
   int getTime() {
     return (preparationMinutes ?? 0) + (cookingMinutes ?? 0);
   }

@@ -63,7 +63,8 @@ class _MyHomePageState extends State<MyHomePage> {
     return;
   }
   print("reached her");
-  SendToApi(recipe1, recipe2);
+
+  sendToApi(recipe1, recipe2);
   // Merge the two recipes
   Recipe recipe3 = await recipe1.merge(recipe1, recipe2);
   recipe3.printSteps();
