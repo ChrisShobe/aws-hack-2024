@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:recipe_app/MergeRecipes.dart';
 
 class Recipe with RecipeMergeMixin{
