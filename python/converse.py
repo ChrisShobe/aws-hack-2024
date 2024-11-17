@@ -2,6 +2,7 @@ import boto3
 from botocore.exceptions import ClientError
 import os
 from dotenv import load_dotenv
+from requesting import combined_message # importing the function 
 
 load_dotenv()
 
@@ -19,8 +20,18 @@ client = boto3.client(
 # The model ID for the model you want to use
 model_id = "us.meta.llama3-2-3b-instruct-v1:0"
 
+recipe1 = input("Enter recipe 1: ")
+recipe2 = input("enter recipe 2: ")
+more_info = input("enter more info: ")
+
 # The message you want to send to the model
-user_message = "Summarize AWS"
+user_message = combined_message(recipe1, recipe2, more_info)
+# user_message = (/some message wiht context etc
+#                //recipe 1
+#`   ``` recipe 2
+#    // more information for the ai
+
+#)
 
 conversation = [
     {
