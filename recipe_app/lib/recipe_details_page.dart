@@ -104,10 +104,31 @@ class RecipeDetailsPage extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                apiResponse, // Display the API response here
+                apiResponse, 
                 style: const TextStyle(color: Color.fromRGBO(100, 33, 27, 1)),
               ),
             ),
+            Padding(
+                padding: const EdgeInsets.symmetric(vertical: 50),
+                child: TextField(
+                  controller: _moreInfo,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Recipe 2',
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 50),
+                child: SizedBox(
+                  height: 50,
+                  width: 1000,
+                  child: ElevatedButton(
+                    onPressed: _onPressed,
+                    child: const Text('Generate Recipe'),
+                  ),
+                ),
+              ),
           ],
         ),
       ),
