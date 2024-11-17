@@ -1,11 +1,13 @@
 import 'package:recipe_app/MergeRecipes.dart';
+import 'dart:convert';
+import 'package:recipe_app/JsonParser.dart';
 
-class Recipe with RecipeMergeMixin{
+class Recipe with RecipeMergeMixin {
   bool? vegetarian;
-  List<String>? ingredients;
+  List<dynamic>? ingredients;
   String? title;
   int? servings;
-  List<String>? steps; // Unified list for steps
+  List<dynamic>? steps; // Unified list for steps
   int? preparationMinutes;
   int? cookingMinutes;
 
@@ -19,19 +21,20 @@ class Recipe with RecipeMergeMixin{
     this.preparationMinutes,
     this.cookingMinutes,
   });
-  
-  String? getName(){
+
+  String? getName() {
     return title;
   }
+
   int getTime() {
     return (preparationMinutes ?? 0) + (cookingMinutes ?? 0);
   }
-  List<String> getSteps() {
-    // Ensure that steps is not null before returning
+
+  List<dynamic> getSteps() {
     return steps ?? [];
   }
-   List<String> getIngredients() {
-    // Ensure that steps is not null before returning
+
+  List<dynamic> getIngredients() {
     return ingredients ?? [];
   }
 
@@ -78,8 +81,8 @@ class Recipe with RecipeMergeMixin{
     totalTime = (preparationMinutes ?? 0) + (cookingMinutes ?? 0);
     return totalTime;
   }
+
   void printSteps() {
-    // Ensure 'steps' is not null and has items
     if (steps != null && steps!.isNotEmpty) {
       for (var step in steps!) {
         print(step);
@@ -88,5 +91,38 @@ class Recipe with RecipeMergeMixin{
       print('No steps available.');
     }
   }
+
+  // Set ingredients from JSON string
+  void setIngredients(List<dynamic> newIngredients) {
+    ingredients = newIngredients;
+  }
+
+  // Set steps from JSON string
+  void setSteps(List<dynamic> newSteps) {
+    steps = newSteps;
+  }
+
+void ParseStrings(List<dynamic> ingredients, List<dynamic> steps) {
+  // Parse ingredients and remove any unnecessary characters
+  List<String> parsedIngredients = [];
+  for (var ingredient in ingredients) {
+    // Assuming ingredients are in string format, just clean them up
+    if (ingredient is String) {
+      parsedIngredients.add(ingredient.trim());
+    }
+  }
+
+  // Parse steps and remove any unnecessary characters
+  List<String> parsedSteps = [];
+  for (var step in steps) {
+    // Assuming steps are in string format, just clean them up
+    if (step is String) {
+      parsedSteps.add(step.trim());
+    }
+  }
+  // Set the cleaned lists back to the class
+  setIngredients(parsedIngredients);
+  setSteps(parsedSteps);
+}
 
 }

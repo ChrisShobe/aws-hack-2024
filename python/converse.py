@@ -32,31 +32,18 @@ def fetch_model_response(client, model_id, user_message, previous_responses=None
         previous_responses (list, optional): The list of previous messages in the conversation.
 
     Returns:
-        str: The model response or an error message if the response is None.
+        str: The model response or None if the response is empty or an error occurs.
     """
     if not user_message:
         return None
 
-    conversation = []
-
-    if not previous_responses:
-        conversation.append(
-            {
-                "role": "user",
-                "content": [{"text": user_message}],
-            }
-        )
-    else:
-        if previous_responses[0]["role"] != "user":
-            return None
-
-        conversation.extend(previous_responses)
-        conversation.append(
-            {
-                "role": "user",
-                "content": [{"text": user_message}],
-            }
-        )
+    conversation = previous_responses if previous_responses else []
+    conversation.append(
+        {
+            "role": "user",
+            "content": [{"text": user_message}],
+        }
+    )
 
     try:
         streaming_response = client.converse_stream(
@@ -70,46 +57,44 @@ def fetch_model_response(client, model_id, user_message, previous_responses=None
             if "contentBlockDelta" in chunk:
                 response_text += chunk["contentBlockDelta"]["delta"]["text"]
 
-        if not response_text:
-            raise ValueError("Model response is empty or None.")
-
-        return response_text
+        return response_text if response_text else None
 
     except (ClientError, ValueError, Exception):
         return None
 
 
-def fetch_model_responses_multiple_times(client, model_id, user_message, previous_responses=None, num_requests=3):
+def fetch_model_response_for_string(client, model_id, general_string):
     """
-    Calls the fetch_model_response function multiple times in a loop.
+    Fetches the model response from AWS Bedrock for a general string input.
 
     Args:
         client (boto3.client): The initialized AWS Bedrock client.
-        model_id (str): The model ID for the model to use.
-        user_message (str): The user message to send.
-        previous_responses (list, optional): List of previous conversation history.
-        num_requests (int, optional): The number of times to call fetch_model_response. Default is 3.
+        model_id (str): The ID of the model to use.
+        general_string (str): The general string to send to the model.
 
     Returns:
-        list: A list of responses from the model for each request.
+        str: The model response or None if the response is empty or an error occurs.
     """
-    responses = []
-    for _ in range(num_requests):
-        response = fetch_model_response(client, model_id, user_message, previous_responses)
-        
-        if response:
-            responses.append(response)
-            previous_responses.append(
-                {
-                    "role": "user",
-                    "content": [{"text": user_message}],
-                }
-            )
-            previous_responses.append(
-                {
-                    "role": "assistant",
-                    "content": [{"text": response}],
-                }
-            )
+    if not general_string:
+        return None
+    conversation = [
+        {
+            "role": "user",
+            "content": [{"text": general_string}],
+        }
+    ]
+    try:
+        streaming_response = client.converse_stream(
+            modelId=model_id,
+            messages=conversation,
+            inferenceConfig={"maxTokens": 512, "temperature": 0.5, "topP": 0.9},
+        )
+        response_text = ""
+        for chunk in streaming_response["stream"]:
+            if "contentBlockDelta" in chunk:
+                response_text += chunk["contentBlockDelta"]["delta"]["text"]
+        return response_text if response_text else None
+    except (ClientError, ValueError, Exception) as e:
+        print(f"Error fetching model response: {e}")
+        return None
 
-    return responses

@@ -1,0 +1,80 @@
+Parse this JSON format to follow this specific exact format below. 
+First we will list the title (e.g. “Combined Recipe: Recipe [A] and Recipe [B]).
+Then we will list the ingredients. Have the title “Ingredients” and then list the ingredients line by line below the title. 
+Then we will list the directions. Have the title “Directions” and then list the specific steps below, where each step is its own line.
+Here is an example of the specific format the parsing should follow. 
+Combined Recipe: Pumpkin Pie and Thanksgiving Turkey
+
+Ingredients:
+
+Pumpkin Pie:
+- Brown sugar
+- Cinnamon
+- Coconut oil
+- Full-fat coconut milk
+- Ground ginger
+- Hazelnuts
+- Nutmeg
+- Powdered sugar
+- Pumpkin puree
+- Salt
+- Vanilla extract
+- Vegan semisweet chocolate chips
+
+Thanksgiving Turkey:
+- Water
+- Flour
+- Turkey
+- Butter
+- Orange juice
+- Natural maple syrup
+- Bay leaves
+- Stuffing
+- Thyme
+- Salt
+- Black pepper
+- Chopped vegetables
+- Garlic
+
+Directions:
+
+1. (Pumpkin Pie) Preheat the oven to 350°F.
+2. (Pumpkin Pie) Line a cupcake or mini tart tray with paper liners.
+3. (Pumpkin Pie) In a food processor or blender, process hazelnuts, flour, sugar, coconut oil, and salt. Add 2 tbsp water and pulse until the dough forms. The texture should be like coarse, wet sand.
+4. (Pumpkin Pie) Add about 2 tbsp of crust dough to each of the paper cups. Press and flatten the dough into the cup using the fingers.
+5. (Pumpkin Pie) Bake the crust for 15 minutes. Set a timer for 15 minutes.
+
+6. (Turkey) While the pumpkin pie crust is baking, prepare the turkey for roasting.
+7. (Turkey) Remove any innards from the turkey. Remove any excess fat from the neck or chest cavity and rinse the cavities thoroughly with cool water and pat dry.
+8. (Turkey) Season the turkey liberally with salt and black pepper.
+9. (Turkey) Combine the butter, orange juice, maple syrup, thyme, salt, and black pepper in a microwave-safe bowl. Heat to melt, about 60 seconds.
+10. (Turkey) Stuff the turkey lightly with your desired stuffing, about 7 cups total. If there is skin to pull together to cover the stuffing, secure it with skewers. If this skin has been trimmed off, cover the exposed stuffing with foil.
+11. (Turkey) Add bay leaves, chopped vegetables, garlic, and 1 cup of stock (or water) to the roasting pan.
+12. (Turkey) Place a roasting rack in the pan (one that is high enough to hold the turkey above the liquids).
+13. (Turkey) Brush the turkey liberally with the melted thyme butter and place on the rack, breast side down.
+
+14. (Pumpkin Pie) When the timer goes off, remove the pumpkin pie crust from the oven.
+15. (Pumpkin Pie) In the meantime, blend the pumpkin pie filling ingredients together until thoroughly mixed and creamy.
+16. (Pumpkin Pie) Melt the chocolate chips using the double boiler method or simply microwaving for about 1 minute.
+17. (Pumpkin Pie) Add about 2 tsp melted chocolate into the center of each mini pie crust and spread it out and up toward the sides.
+18. (Pumpkin Pie) Fill the remaining space in each mini pie crust with the pumpkin mixture.
+
+19. (Turkey) Place the prepared turkey in the preheated oven and set a timer for 4 hours.
+20. (Pumpkin Pie) Bake the pumpkin pies in the oven alongside the turkey for about 20-24 minutes. Set a timer for 20 minutes.
+
+21. (Pumpkin Pie) When the 20-minute timer goes off, check the pumpkin pies. If the edges are lightly browned, remove them from the oven.
+22. (Pumpkin Pie) Cool the pumpkin pies to room temperature, then chill in the fridge for at least 2 hours.
+
+23. (Turkey) Baste the turkey every 30 minutes with the thyme butter.
+24. (Turkey) After 1 hour, flip the turkey onto its back for the remaining cooking time.
+25. (Turkey) If any areas of the turkey start to darken too quickly, cover lightly with foil.
+26. (Turkey) Continue to baste the turkey every 30 minutes.
+27. (Turkey) If the pan dries out, add additional stock or water. Never let the pan become dry.
+28. (Turkey) After the 4-hour timer goes off, check the turkey's internal temperature. It's done when a thermometer inserted in the thickest part of the thigh reads 160°F, and the juices run clear when you pierce the thigh.
+29. (Turkey) Remove the turkey from the oven and place it on a carving board. Tent the turkey loosely with foil and let rest for at least 30 minutes before carving.
+
+30. (Pumpkin Pie) While the turkey is resting, prepare the coconut whipped cream (optional).
+31. (Pumpkin Pie) Open the chilled coconut milk can and scoop out the top cream part only. Blend the cream with powdered sugar and vanilla extract.
+32. (Pumpkin Pie) Top the chilled pumpkin pies with coconut whipped cream, cocoa powder, and cinnamon, if desired.
+
+Both the Pumpkin Pie and Thanksgiving Turkey should now be ready to serve together.
