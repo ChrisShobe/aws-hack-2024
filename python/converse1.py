@@ -23,7 +23,6 @@ client = boto3.client(
 # The model ID for the model you want to use
 model_id = "us.meta.llama3-2-3b-instruct-v1:0"
 
-
 def fetch_model_response(client, model_id, user_message, previous_responses=None):
     """
     Fetches the model response from AWS Bedrock with context.

@@ -1,7 +1,6 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-import converse.py
-from requesting.py import combined_message
+from requesting import combined_message
 
 app = Flask(__name__)
 CORS(app)
@@ -35,15 +34,15 @@ def receiveData():
         recipe1_final = stringify(recipe1_name, recipe1_ingredients, recipe1_steps)
         recipe2_final = stringify(recipe2_name, recipe2_ingredients, recipe2_steps)
 
-        combined_message(recipe1_steps, recipe2_steps, read_message_file('message.txt'))
+        combined_message(recipe1_final, recipe2_final, read_message_file('message.txt'))
+        
+        # print(f"Received Recipe 1: {recipe1_name}")
+        # print(f"Steps: {recipe1_steps}")
+        # print(f"Ingredients: {recipe1_ingredients}")
 
-        print(f"Received Recipe 1: {recipe1_name}")
-        print(f"Steps: {recipe1_steps}")
-        print(f"Ingredients: {recipe1_ingredients}")
-
-        print(f"Received Recipe 2: {recipe2_name}")
-        print(f"Steps: {recipe2_steps}")
-        print(f"Ingredients: {recipe2_ingredients}")
+        # print(f"Received Recipe 2: {recipe2_name}")
+        # print(f"Steps: {recipe2_steps}")
+        # print(f"Ingredients: {recipe2_ingredients}")
 
         # Respond back with a confirmation
         return jsonify({
