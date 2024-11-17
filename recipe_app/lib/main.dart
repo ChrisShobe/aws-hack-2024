@@ -33,7 +33,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 Future<void> delayBetweenRequests() async {
-  await Future.delayed(Duration(seconds: 5)); // 5-second delay
+  await Future.delayed(Duration(seconds: 2)); // 5-second delay
 }
 
 class _MyHomePageState extends State<MyHomePage> {
@@ -59,7 +59,6 @@ class _MyHomePageState extends State<MyHomePage> {
     return;
   }
 
-  // Capture response body from the API
   String apiResponse = await sendToApi(recipe1, recipe2);
 
   Recipe recipe3 = await recipe1.merge(recipe1, recipe2);

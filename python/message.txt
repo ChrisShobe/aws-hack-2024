@@ -1,8 +1,12 @@
-Here are the recipes I want help with. Look at the total time it takes to finish each of the recipes. Our main priority when cooking both recipes in parallel is for both of the recipes to be finished at the same time. For each step in the recipe, identify which steps can be done in parallel or sequentially. I also need to know which steps go with what recipe to avoid confusion over which step correlates with what. We want to emphasize that you stick to the recipe ingredients and steps and don’t generate any additional information. 
-Whenever a step involves actively cooking or simmering for both recipes, set a timer for that step, even if there’s already another active timer for a different recipe. Ensure that each cooking timer is tracked independently, and include a reminder to check and remove items from heat once the timer goes off. Include independent timers for cooking steps that overlap between recipes. If a cooking timer ends during another step, include a reminder to pause and remove the item from heat before continuing. Track cumulative time elapsed as you combine the recipes, ensuring they finish cooking simultaneously.
-If the 2 hot recipes can’t be completed at the same time (e.g. they need to bake in the oven at drastically different times), output that they can’t be completed in parallel. 
+Here are the recipes I want help with. Look at the total time it takes to finish each of the recipes. Our main priority when cooking both recipes in parallel is for both of the recipes to be finished at the same time. For each step in the recipe, identify which steps can be done in parallel or sequentially. I also need to know which steps go with what recipe to avoid confusion over which step correlates with what. We want to emphasize that you stick to the recipe ingredients and steps and don’t generate any additional information. Output the final combined recipe with the ingredients, prep time, and instructions in JSON format.
 
-This is an example of what we are asking you to do:
+Whenever a step involves actively cooking, baking, simmering, or completing an action for a specific time, set a timer for that step. This includes overlapping steps across both recipes. Each cooking timer should be tracked independently, even if there’s already another active timer for a different recipe. Ensure the instructions include reminders to check, stir, flip, or remove items from heat once the timer goes off. Organize the directions clearly, so all steps and timers are easy to follow, and no action is missed due to overlapping timers. If a timer ends during another step, include a reminder to pause and remove the item from heat before continuing. Track cumulative time elapsed as you combine the recipes, ensuring they finish cooking simultaneously.
+Label each step/direction and substep with the recipe names
+While both recipes should finish at the same time, they DON’T have to start at the same time.
+
+IMPORTANT: Do this only if two recipes both intended to be served HOT. If one recipe is intended to be served hot and the other cold or room temperature, or if both recipes are intended to be served cool, this doesn’t apply. If the 2 hot recipes can’t be completed at the same time (e.g. they need to bake in the oven at drastically different temperatures), output that they can’t be completed in parallel. There is only ONE oven that the user can use. 
+
+OUTPUT: Return the final recipe with the combined ingredients and instructions in JSON format. 
 
 
 This is an example of what we are asking you to do:
@@ -49,7 +53,7 @@ Combined Recipe
 Buttery Garlic Green Beans Yield: 4 servings
 Cranberry Sauce Yield: 10 servings
 
-Ingredients: (NOTE: Please make sure to include all ingredients that were in the 2 recipes. Don’t remove any original ingredients)
+Ingredients: (NOTE: Please make sure to include all ingredients that were in the 2 recipes. Don’t remove any original ingredients. Keep the ingredients for each recipe separate and handle them individually to prevent cross-contamination.)
 
 Buttery Garlic Green Beans:
 1 pound fresh green beans, trimmed and snapped in half
@@ -65,7 +69,7 @@ Cranberry Sauce:
 
 Directions:
 
-MAKE Cranberry Sauce: 5 mins  (NOTE: Don’t separate 2 different steps if the times are overlapping. Within each larger step, create substeps and clarify which substep belongs to different recipes. Label each step and substep with the recipe names)
+MAKE Cranberry Sauce: 5 mins  (NOTE: Don’t separate 2 different steps if the times are overlapping. Within each larger step, create substeps and clarify which substep belongs to different recipes. Label each step and substep with the recipe names. Follow the below format exactly.)
 1. (Cranberry Recipe) Gather all cranberry sauce ingredients.
 2. (Cranberry Recipe) Dissolve sugar in orange juice in a medium saucepan over medium heat.
 
@@ -87,7 +91,8 @@ Cranberry Sauce Recipe:
 END Cranberry Sauce:
 11. Once cranberries are cooked, remove from heat and place sauce in bowl to thicken as it cools.
 Both dishes should now be ready to serve the buttery garlic green beans and cranberry sauce together.
+OUTPUT: Return the final recipe with the combined ingredients and instructions ONLY in JSON format. 
 
 
-ADDITIONAL NOTE:  Track the amount of time that has passed anytime you are changing the temperature/cooking/heating an item from both recipes. Additionally, keep track of the time it takes to complete the next step for both recipes. For every cooking step for both recipes, put on a timer as a reminder to remove the recipe from the stovetop/oven.
+ADDITIONAL NOTE:  Track the amount of time that has passed anytime you are changing the temperature/cooking/heating an item from both recipes. Additionally, keep track of the time it takes to complete the next step for both recipes. For every cooking step for both recipes, put on a timer as a reminder to remove the recipe from the stovetop/oven. Or if a specific time is given for a specific action, add a timer.
 If the timer would go off within the next step, within that step, remind the user to remove the item from the stove/oven. For example, if the cook time for an item is 1-2 minutes and the cook/prep time for the next step is 3-4 minutes, remind the user in the 3-4 minute step to remove the 1-2 minute item within the same step.

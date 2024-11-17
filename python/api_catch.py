@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from requesting import combined_message
-from converse import fetch_model_responses_multiple_times
+from converse import fetch_model_responses_multiple_times, fetch_model_response
 import boto3
 from botocore.exceptions import ClientError
 import os
@@ -51,10 +51,7 @@ def receiveData():
         # Generate a combined message using the recipes and additional instructions from a file
         combined_msg = combined_message(recipe1_final, recipe2_final, read_message_file('message.txt'))
 
-        responses = fetch_model_responses_multiple_times(client, model_id, combined_msg, [])
-
-        # Handle responses (optional)
-        print("Model responses:", responses)
+        responses = fetch_model_response(client, model_id, combined_msg, [])
 
         # Respond back with a confirmation
         return jsonify({

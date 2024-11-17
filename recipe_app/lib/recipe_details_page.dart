@@ -86,22 +86,6 @@ class RecipeDetailsPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              "Directions",
-              style: TextStyle(
-                color: Color.fromRGBO(100, 33, 27, 1),
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                combinedRecipe.getSteps().join("\n"),
-                style: const TextStyle(color: Color.fromRGBO(100, 33, 27, 1)),
-              ),
-            ),
-            const SizedBox(height: 16), // Add some spacing
-            const Text(
               "API Response",
               style: TextStyle(
                 color: Color.fromRGBO(100, 33, 27, 1),
