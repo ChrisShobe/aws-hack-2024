@@ -107,50 +107,52 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 50),
-              child: RichText(
-                text: const TextSpan(
-                  text: "Please Type in the recipes you would like",
-                  style: TextStyle(fontSize: 24),
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 50),
-              child: TextField(
-                controller: _recipe1Controller,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Recipe 1',
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 50),
+                child: RichText(
+                  text: const TextSpan(
+                    text: "Please Type in the recipes you would like",
+                    style: TextStyle(fontSize: 24),
+                  ),
+                  textAlign: TextAlign.center,
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 50),
-              child: TextField(
-                controller: _recipe2Controller,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Recipe 2',
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 50),
+                child: TextField(
+                  controller: _recipe1Controller,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Recipe 1',
+                  ),
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 50),
-              child: SizedBox(
-                height: 50,
-                width: 1000,
-                child: ElevatedButton(
-                  onPressed: _onPressed,
-                  child: const Text('Generate Recipe'),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 50),
+                child: TextField(
+                  controller: _recipe2Controller,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Recipe 2',
+                  ),
                 ),
               ),
-            ),
-          ],
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 50),
+                child: SizedBox(
+                  height: 50,
+                  width: 1000,
+                  child: ElevatedButton(
+                    onPressed: _onPressed,
+                    child: const Text('Generate Recipe'),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
