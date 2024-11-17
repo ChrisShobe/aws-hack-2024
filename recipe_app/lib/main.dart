@@ -125,10 +125,33 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 219, 198, 166),
-      appBar: AppBar(
-        backgroundColor: const Color.fromRGBO(100, 33, 27, 1),
-        title: Text(widget.title, style: const TextStyle(color: Color.fromRGBO(218, 176, 115, 1))),
-      ),
+      appBar: PreferredSize(
+  preferredSize: const Size.fromHeight(100), // Set the desired height here
+  child: AppBar(
+    backgroundColor: const Color.fromRGBO(100, 33, 27, 1),
+    title: Row(
+      children: [
+        // Logo on the left
+        Image.asset(
+          'assets/logo.png', // Path to your logo in the assets folder
+          height: 60, // Adjust the logo size to fit the taller AppBar
+        ),
+        const Spacer(), // Spacer to push the app name to the center
+        // App name in the center
+        Text(
+          'Literally Cooking',
+          style: const TextStyle(
+            color: Color.fromRGBO(218, 176, 115, 1),
+            fontSize: 40, // Adjust font size as needed
+          ),
+        ),
+        const Spacer(), // Spacer to balance alignment
+      ],
+    ),
+    centerTitle: false, // Turn off default centering for manual adjustments
+  ),
+),
+
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: SingleChildScrollView(
