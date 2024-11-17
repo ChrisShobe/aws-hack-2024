@@ -84,73 +84,37 @@ class RecipeDetailsPage extends StatelessWidget {
           ),
           // Right main section
           Expanded(
-            child: Container(
-              height: 1000,
-              color: const Color.fromARGB(255, 219, 198, 166),
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        "Directions",
-                        style: TextStyle(
-                          color: Color.fromRGBO(100, 33, 27, 1),
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          combinedRecipe.getSteps().join("\n"),
-                          style: const TextStyle(color: Color.fromRGBO(100, 33, 27, 1)),
-                        ),
-                      ),
-                      const SizedBox(height: 16), // Add some spacing
-                      const Text(
-                        "API Response",
-                        style: TextStyle(
-                          color: Color.fromRGBO(100, 33, 27, 1),
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          apiResponse, // Display the API response here
-                          style: const TextStyle(color: Color.fromRGBO(100, 33, 27, 1)),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 50),
-                        child: TextField(
-                          controller: _moreInfo,
-                          decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: 'More Info',
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 50),
-                        child: SizedBox(
-                          height: 50,
-                          width: 1000,
-                          child: ElevatedButton(
-                            onPressed: (_onPressed),
-                            child: const Text('Regenerate Recipe'),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+  child: Container(
+    height: 1000,
+    color: const Color.fromARGB(255, 219, 198, 166),
+    child: Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              "API Response",
+              style: TextStyle(
+                color: Color.fromRGBO(100, 33, 27, 1),
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
               ),
             ),
-          ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                apiResponse, // Display the API response here
+                style: const TextStyle(color: Color.fromRGBO(100, 33, 27, 1)),
+              ),
+            ),
+          ],
+        ),
+      ),
+    ),
+  ),
+),
+
         ],
       ),
     );
