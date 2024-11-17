@@ -83,7 +83,7 @@ class _MyHomePageState extends State<MyHomePage> {
   // Call API and get response
   String apiResponse = await sendToApi(recipe1, recipe2);
 
-  // Save the user inputs and API response to Firebase Realtime Database
+  // Save the user inputs and API response to Firestore
   await _firebaseService.writeDataToFirestore([recipe1String, recipe2String], apiResponse);
 
   // Merge recipes (if required by your application logic)
@@ -118,6 +118,7 @@ class _MyHomePageState extends State<MyHomePage> {
     ),
   );
 }
+
 
 
   @override
