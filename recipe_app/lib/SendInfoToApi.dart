@@ -16,7 +16,7 @@ Future<void> sendToApi(Recipe recipe1, Recipe recipe2) async {
   };
 
   // Define the API URL where the data will be sent
-  var url = Uri.parse('http://localhost:5000/send_data');  // Flask server URL
+  var url = Uri.parse('http://localhost:5001/send_data');  // Flask server URL
 
   try {
     // Send a POST request with the JSON data
