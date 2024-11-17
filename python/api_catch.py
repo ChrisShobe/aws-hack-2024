@@ -1,7 +1,6 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-import converse.py
-from requesting.py import combined_message
+# from requesting.py import combined_message
 
 app = Flask(__name__)
 CORS(app)
