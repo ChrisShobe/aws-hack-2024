@@ -35,7 +35,7 @@ def receiveData():
         recipe2_final = stringify(recipe2_name, recipe2_ingredients, recipe2_steps)
 
         combined_message(recipe1_final, recipe2_final, read_message_file('message.txt'))
-        
+
         # print(f"Received Recipe 1: {recipe1_name}")
         # print(f"Steps: {recipe1_steps}")
         # print(f"Ingredients: {recipe1_ingredients}")
