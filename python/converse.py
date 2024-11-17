@@ -19,7 +19,6 @@ client = boto3.client(
 
 # The model ID for the model you want to use
 model_id = "us.meta.llama3-2-3b-instruct-v1:0"
-
 recipe1 = input("Enter recipe 1: ")
 recipe2 = input("enter recipe 2: ")
 more_info = input("enter more info: ")

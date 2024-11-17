@@ -1,0 +1,93 @@
+Here are the recipes I want help with. Look at the total time it takes to finish each of the recipes. Our main priority when cooking both recipes in parallel is for both of the recipes to be finished at the same time. For each step in the recipe, identify which steps can be done in parallel or sequentially. I also need to know which steps go with what recipe to avoid confusion over which step correlates with what. We want to emphasize that you stick to the recipe ingredients and steps and don’t generate any additional information. 
+Whenever a step involves actively cooking or simmering for both recipes, set a timer for that step, even if there’s already another active timer for a different recipe. Ensure that each cooking timer is tracked independently, and include a reminder to check and remove items from heat once the timer goes off. Include independent timers for cooking steps that overlap between recipes. If a cooking timer ends during another step, include a reminder to pause and remove the item from heat before continuing. Track cumulative time elapsed as you combine the recipes, ensuring they finish cooking simultaneously.
+If the 2 hot recipes can’t be completed at the same time (e.g. they need to bake in the oven at drastically different times), output that they can’t be completed in parallel. 
+
+This is an example of what we are asking you to do:
+
+
+This is an example of what we are asking you to do:
+
+You are given these 2 recipes from the user to combine in parallel:
+
+Input 1: https://www.allrecipes.com/recipe/230103/buttery-garlic-green-beans/ 
+Prep Time: 5 mins
+Cook Time: 10 mins
+Total Time: 15 mins
+Servings: 4
+
+Ingredients
+1 pound fresh green beans, trimmed and snapped in half
+3 tablespoons butter
+3 cloves garlic, minced
+⅛ teaspoon lemon-pepper seasoning, or more to taste
+salt to taste
+
+Directions
+Place green beans into a large skillet and cover with water; bring to a boil. Reduce heat to medium-low and simmer until beans just start to soften, 3 to 5 minutes.
+Drain and return to the skillet. Add butter and stir until melted, 1 to 2 minutes.
+Add garlic; cook until tender and fragrant, 1 to 2 minutes.
+Season with lemon-pepper seasoning and salt before serving.
+
+Input 2: https://www.allrecipes.com/recipe/9111/cranberry-sauce/ 
+Prep Time: 5 mins
+Cook Time: 15 mins
+Total Time: 20 mins
+Servings: 10
+
+Ingredients
+12 ounces cranberries
+1 cup white sugar
+1 cup orange juice
+Directions
+Gather all ingredients.
+Dissolve sugar in orange juice in a medium saucepan over medium heat.
+Stir in cranberries and cook until they start to pop, about 8 to 10 minutes.
+Remove from heat and place sauce in a bowl. It will thicken as it cools.
+
+Combined Recipe
+
+Buttery Garlic Green Beans Yield: 4 servings
+Cranberry Sauce Yield: 10 servings
+
+Ingredients: (NOTE: Please make sure to include all ingredients that were in the 2 recipes. Don’t remove any original ingredients)
+
+Buttery Garlic Green Beans:
+1 pound fresh green beans, trimmed and snapped in half
+3 tablespoons butter
+3 cloves garlic, minced
+⅛ teaspoon lemon-pepper seasoning, or more to taste
+salt to taste
+
+Cranberry Sauce:
+12 ounces cranberries
+1 cup white sugar
+1 cup orange juice
+
+Directions:
+
+MAKE Cranberry Sauce: 5 mins  (NOTE: Don’t separate 2 different steps if the times are overlapping. Within each larger step, create substeps and clarify which substep belongs to different recipes. Label each step and substep with the recipe names)
+1. (Cranberry Recipe) Gather all cranberry sauce ingredients.
+2. (Cranberry Recipe) Dissolve sugar in orange juice in a medium saucepan over medium heat.
+
+COOK Green Beans: 3-5 mins
+3. (Green Bean Recipe) Place green beans into a large skillet and cover with water; bring to a boil.
+4. (Green Bean Recipe) Reduce heat to medium-low and simmer green beans until just softening, 3 to 5 mins. Set green bean timer.
+
+COOK Cranberry Sauce: 8-10 mins and Reminder: Remove Green Beans
+5. (Cranberry Recipe) Stir cranberries into orange juice mixture and cook until cranberries pop, about 8 to 10 mins. Set cranberry sauce timer.
+6. (Green Bean Recipe) Once green bean timer goes off, drain beans and return to skillet.  (NOTE:  In the middle of the recipes, if the time it takes to complete the next step is greater than the time it takes to cook/bake/heat the item of the other recipe, within that next step with an action (chopping, stirring, cooking), have a reminder to briefly stop this action to remove the object from the cooking appliance. For example, if you are in the middle of chopping or stirring something for one recipe and another recipe finishes cooking on the stove or in the oven, remind the user within this same step of chopping and stirring one recipe to remove the item from the other recipe.)
+MAKE Green Beans: 3-4 mins and Reminder: Remove Cranberry Sauce
+Green Beans Recipe:
+7. (Green Bean Recipe) Add butter and stir until melted, 1 to 2 minutes.
+8. (Green Bean Recipe) Add garlic and cook until tender and fragrant, 1 to 2 minutes.
+Cranberry Sauce Recipe:
+9. (Cranberry Sauce Recipe) If cranberry sauce timer goes off, remove cranberries from heat before continuing green beans.
+10. (Cranberry Sauce Recipe) Season green beans with lemon-pepper and salt.
+
+END Cranberry Sauce:
+11. Once cranberries are cooked, remove from heat and place sauce in bowl to thicken as it cools.
+Both dishes should now be ready to serve the buttery garlic green beans and cranberry sauce together.
+
+
+ADDITIONAL NOTE:  Track the amount of time that has passed anytime you are changing the temperature/cooking/heating an item from both recipes. Additionally, keep track of the time it takes to complete the next step for both recipes. For every cooking step for both recipes, put on a timer as a reminder to remove the recipe from the stovetop/oven.
+If the timer would go off within the next step, within that step, remind the user to remove the item from the stove/oven. For example, if the cook time for an item is 1-2 minutes and the cook/prep time for the next step is 3-4 minutes, remind the user in the 3-4 minute step to remove the 1-2 minute item within the same step.
