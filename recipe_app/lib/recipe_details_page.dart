@@ -74,26 +74,31 @@ class RecipeDetailsPage extends StatelessWidget {
           // Right main section
           Expanded(
             child: Container(
+              height: 1000,
               color: const Color.fromARGB(255, 219, 198, 166),
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      "Directions",
-                      style: TextStyle(
-                        color: Color.fromRGBO(100, 33, 27, 1),
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        "Directions",
+                        style: TextStyle(
+                          color: Color.fromRGBO(100, 33, 27, 1),
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 16),
-                    Text(
-                      combinedRecipe.getSteps().join("\n"), // Replace with actual steps
-                      style: const TextStyle(color: Color.fromRGBO(100, 33, 27, 1)),
-                    ),
-                  ],
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          combinedRecipe.getSteps().join("\n"), // Replace with actual steps
+                          style: const TextStyle(color: Color.fromRGBO(100, 33, 27, 1)),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
